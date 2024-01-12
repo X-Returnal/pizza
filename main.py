@@ -6,14 +6,48 @@ and manageing money and inventory
 ---------------
 will cantrell
 """
+import userinput
+import start_menu
+import order
+import mgnt
+import kiction
+import threading
+import time
+
+roomid = -1
+
+
+
+class RepeatEvery(threading.Thread):
+    def __init__(self, interval, func, *args, **kwargs):
+        threading.Thread.__init__(self)
+        self.interval = interval  # seconds between calls
+        self.func = func          # function to call
+        self.args = args          # optional positional argument(s) for call
+        self.kwargs = kwargs      # optional keyword argument(s) for call
+        self.runable = True
+    def run(self):
+        while self.runable:
+            self.func(*self.args, **self.kwargs)
+            time.sleep(self.interval)
+    def stop(self):
+        self.runable = False
+
+
+
 
 
 def update():
+    if roomid == -1:
+        start_menu.onEnter()
     # run logic and create the next game frame
-    pass
-def get_usertask():
-    #returns the current user location in the store
-    pass
-def get_userinput():
-    #returns revelavent user inputs
-    pass
+    if roomid == 0:
+        start_menu.update()
+    else:
+        order.update()
+    
+    match roomid:
+        case 0:
+            start_menu.draw_scene()
+    
+
