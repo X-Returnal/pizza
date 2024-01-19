@@ -6,6 +6,7 @@ and manageing money and inventory
 ---------------
 will cantrell
 """
+
 import userinput
 import start_menu
 import order
@@ -13,8 +14,8 @@ import mgnt
 import kiction
 import threading
 import time
-
-roomid = -1
+from os import system
+roomid:int = -1
 
 
 
@@ -38,8 +39,13 @@ class RepeatEvery(threading.Thread):
 
 
 def update():
+    system("cls")
+    global roomid
     if roomid == -1:
-        start_menu.onEnter()
+        
+        temp = start_menu.onEnter()
+        
+        roomid = temp
     # run logic and create the next game frame
     if roomid == 0:
         start_menu.update()
@@ -51,3 +57,7 @@ def update():
             start_menu.draw_scene()
     
 
+thread = RepeatEvery(1,update)
+
+thread.start()
+thread.join()
