@@ -6,7 +6,9 @@ and manageing money and inventory
 ---------------
 will cantrell
 """
-
+from ast import Try
+from socket import timeout
+from inputimeout import inputimeout, TimeoutOccurred
 import userinput
 import start_menu
 import order
@@ -15,49 +17,29 @@ import kiction
 import threading
 import time
 from os import system
+
 roomid:int = -1
+userinput = None
 
-
-
-class RepeatEvery(threading.Thread):
-    def __init__(self, interval, func, *args, **kwargs):
-        threading.Thread.__init__(self)
-        self.interval = interval  # seconds between calls
-        self.func = func          # function to call
-        self.args = args          # optional positional argument(s) for call
-        self.kwargs = kwargs      # optional keyword argument(s) for call
-        self.runable = True
-    def run(self):
-        while self.runable:
-            self.func(*self.args, **self.kwargs)
-            time.sleep(self.interval)
-    def stop(self):
-        self.runable = False
-
-
-
-
-
-def update():
+def update(uinput):
     system("cls")
     global roomid
     if roomid == -1:
-        
-        temp = start_menu.onEnter()
-        
-        roomid = temp
+        roomid = start_menu.onEnter()
     # run logic and create the next game frame
     if roomid == 0:
-        start_menu.update()
+        start_menu.update(uinput)
     else:
-        order.update()
+        order.update(uinput)
     
     match roomid:
         case 0:
             start_menu.draw_scene()
     
 
-thread = RepeatEvery(1,update)
-
-thread.start()
-thread.join()
+while True:
+    update(userinput)
+    try:
+        userinput = inputimeout(prompt=">> ", timeout = 1)
+    except TimeoutOccurred:
+        userinput = None

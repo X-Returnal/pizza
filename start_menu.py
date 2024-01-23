@@ -7,7 +7,7 @@ holds all logic for start menu
 def onEnter():
     return 0
     
-def update():
+def update(input):
     pass
 def draw_scene():
     #creates the current scene ui
