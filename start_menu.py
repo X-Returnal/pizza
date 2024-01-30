@@ -8,8 +8,11 @@ def onEnter():
     return 0
     
 def update(input):
-    pass
+    if input == "w":
+        print("")
+        return 1
+    return 0
 def draw_scene():
     #creates the current scene ui
     print("Pizza Time!")
-    print("Press enter to start")
+    print("Type \"w\" then submit to start")

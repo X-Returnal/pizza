@@ -6,40 +6,55 @@ and manageing money and inventory
 ---------------
 will cantrell
 """
-from ast import Try
-from socket import timeout
-from inputimeout import inputimeout, TimeoutOccurred
-import userinput
 import start_menu
 import order
-import mgnt
 import kiction
-import threading
-import time
+import mgnt
+import checkout
 from os import system
 
 roomid:int = -1
+prevroomid:int = -1
+order_data = []
 userinput = None
 
 def update(uinput):
     system("cls")
     global roomid
+    global prevroomid
     if roomid == -1:
         roomid = start_menu.onEnter()
+        prevroomid = roomid
+    #check if new room entered. if true, run on entered logic
+    if prevroomid != roomid:
+        match roomid:
+            case 0:
+                roomid = start_menu.onEnter()
+            case 1:
+                temp = order.onEnter()
+                roomid = temp[0]
+
+
+
     # run logic and create the next game frame
-    if roomid == 0:
-        start_menu.update(uinput)
-    else:
-        order.update(uinput)
+    match roomid:
+        case 0:
+            roomid = start_menu.update(uinput)
+        case 1:
+            temp = order.update(uinput)
+            roomid = temp[0]
+        case _:
+            print("no room here")
     
     match roomid:
         case 0:
             start_menu.draw_scene()
+        case 1:
+            order.draw_scene()
+        
+    prevroomid = roomid
     
 
 while True:
     update(userinput)
-    try:
-        userinput = inputimeout(prompt=">> ", timeout = 1)
-    except TimeoutOccurred:
-        userinput = None
+    userinput = input(">> ")
